@@ -32,7 +32,7 @@ initRoad(Road* road, float laneWidth, float laneHeight,
       enemy->vel.x = 0.5;
     else
       enemy->vel.x = -0.5;
-		
+
     enemy->size = (Vec3f) { 0.15, 0.1, 0.1 };
     ++enemy;
   }
@@ -69,7 +69,7 @@ initRiver(River* river, float laneWidth, float laneHeight, size_t numLanes,
       log->vel.x = 0.5;
     else
       log->vel.x = -0.5;
-		
+
     // we specified our cylinders looking down the z axis so we need to make sure they are rotated the right way when we draw them
     log->rot.y = 90.0;
     log->size = (Vec3f) { 0.1, 0.1, 0.5 };

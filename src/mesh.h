@@ -42,5 +42,7 @@ Mesh* createCylinder(size_t segments, size_t slices, float radius);
 void drawLine(Vec3f color, Vec3f a, Vec3f b);
 void drawParabola(Vec3f color, Vec3f vel, float g, DrawingFlags* flags);
 
-void bindVBOs(GLuint vbo, GLuint ibo, GLuint tbo);
+
+void buildVBO(Mesh *mesh);
+void bindVBOs(GLuint vbo, GLuint ibo);
 void unbindVBOs();

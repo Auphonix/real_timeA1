@@ -55,15 +55,6 @@ createMesh(size_t numVerts, size_t numIndices)
     mesh->verts = (Vertex*) calloc(numVerts, sizeof(Vertex));
     mesh->indices = (unsigned int*) calloc(numIndices, sizeof(int));
 
-    glGenBuffers(1, &mesh->vbo);
-    glGenBuffers(1, &mesh->ibo);
-    glGenBuffers(1, &mesh->tbo);
-    bindVBOs(mesh->vbo, mesh->ibo, mesh->tbo);
-    glBufferData(GL_ARRAY_BUFFER, mesh->numVerts * sizeof(Vertex), mesh->verts, GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->numIndices * sizeof(unsigned int), mesh->indices, GL_STATIC_DRAW);
-    unbindVBOs();
-    printf("Finished building VBO for mesh\n");
-
     return mesh;
 }
 
@@ -116,14 +107,18 @@ renderMesh(Mesh* mesh, DrawingFlags* flags)
         glPopClientAttrib();
     }
     else if (flags->rm == VBO){
+
+        glEnableClientState(GL_VERTEX_ARRAY);
         bindVBOs(mesh->vbo, mesh->ibo);
 
         glPushAttrib(GL_CURRENT_BIT);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
         glVertexPointer(3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
         glNormalPointer(GL_FLOAT, sizeof(Vertex), &mesh->verts[0].normal);
         glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), &mesh->verts[0].tc);
-        glDrawElements(GL_TRIANGLES, mesh->numIndices, GL_UNSIGNED_INT, mesh->indices);
+
+        glDrawElements(GL_TRIANGLES, mesh->numIndices, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+
         glPopAttrib();
         unbindVBOs();
 
@@ -165,6 +160,7 @@ createCube()
     Mesh* mesh = createMesh(24, 36);
     memcpy(mesh->verts, cubeVerts, 24 * sizeof(Vertex));
     memcpy(mesh->indices, cubeIndices, 36 * sizeof(unsigned int));
+    buildVBO(mesh);
     return mesh;
 }
 
@@ -205,7 +201,7 @@ createPlaneColMajor(float width, float height, size_t rows, size_t cols)
             mesh->indices[index++] = (j + 1) * (rows + 1) + i + 1;
         }
     }
-
+    buildVBO(mesh);
     return mesh;
 }
 
@@ -241,7 +237,7 @@ createPlaneRowMajor(float width, float height, size_t rows, size_t cols)
             mesh->indices[index++] = (i + 1) * (cols + 1) + j + 1;
         }
     }
-
+    buildVBO(mesh);
     return mesh;
 }
 
@@ -291,7 +287,7 @@ createSphere(size_t stacks, size_t slices)
             mesh->indices[index++] = (i + 1) * (slices + 1) + j + 1;
         }
     }
-
+    buildVBO(mesh);
     return mesh;
 }
 
@@ -378,7 +374,7 @@ createCylinder(size_t stacks, size_t slices, float radius)
             mesh->indices[index++] = endcapVerts + slices + 1;
         }
 
-
+        buildVBO(mesh);
         return mesh;
     }
 
@@ -430,10 +426,18 @@ createCylinder(size_t stacks, size_t slices, float radius)
 
     /* ----------- VBO HELPER METHODS ------------- */
 
-    void bindVBOs(GLuint vbo, GLuint ibo, GLuint tbo){
+    void buildVBO(Mesh *mesh){
+        glGenBuffers(1, &mesh->vbo);
+        glGenBuffers(1, &mesh->ibo);
+        bindVBOs(mesh->vbo, mesh->ibo);
+        glBufferData(GL_ARRAY_BUFFER, mesh->numVerts * sizeof(Vertex), mesh->verts, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->numIndices * sizeof(unsigned int), mesh->indices, GL_STATIC_DRAW);
+        unbindVBOs();
+    }
+
+    void bindVBOs(GLuint vbo, GLuint ibo){
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBindBuffer(GL_TEXTURE_BUFFER, tbo);
     }
 
     void unbindVBOs(){

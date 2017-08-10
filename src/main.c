@@ -101,6 +101,7 @@ bool handleKeyDown(SDL_Keysym *key){
         printf("Changing RM (%i)\n", globals.drawingFlags.rm);
         break;
         case 'p': // Toggle wireframe
+        printf("Wireframe triggered\n");
         globals.drawingFlags.wireframe = !globals.drawingFlags.wireframe;
         if (globals.drawingFlags.wireframe) {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -325,7 +326,7 @@ init()
 
     // VBO
     //glBindBuffer(GL_ARRAY_BUFFER, globals.vbo);
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, globals.ibo);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, globals.ibo);m
 }
 
 int main(int argc, char const *argv[])

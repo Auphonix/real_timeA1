@@ -85,6 +85,10 @@ bool handleKeyDown(SDL_Keysym *key){
         printf("Toggling OSD\n");
         globals.drawingFlags.osd = !globals.drawingFlags.osd;
         break;
+        case 'e': // Toggle Error checking
+        printf("Toggle Error checking\n");
+        globals.error_check = !globals.error_check;
+        break;
         case 'l': // Toggle lighting
         globals.drawingFlags.lighting = !globals.drawingFlags.lighting;
         printf("Toggling lighting\n");
@@ -272,6 +276,7 @@ render()
 
     applyViewMatrix(&globals.camera);
 
+    // ADD LIGHTS HERE MANUALLY
     static float lightPos[] = { 1, 1, 1, 0 };
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 
@@ -283,7 +288,9 @@ render()
     SDL_GL_SwapWindow(mainWindow);
 
     globals.counters.frameCount++;
+
     GLenum err;
+    if(globals.error_check)
     while((err = glGetError()) != GL_NO_ERROR){
         printf("display: %s\n", gluErrorString(err));
     }

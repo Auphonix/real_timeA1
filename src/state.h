@@ -22,4 +22,5 @@ typedef struct {
   bool halt;
   int windowx, windowy;
   int num_triangles;
+  bool error_check;
 } Globals;

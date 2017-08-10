@@ -29,6 +29,9 @@
 
 Globals globals;
 SDL_Window *mainWindow = 0;
+int num_objects;
+int num_car_triangles;
+extern int num_triangles;
 
 static void cleanup() {
     destroyPlayer(&globals.player);
@@ -78,6 +81,10 @@ bool handleKeyDown(SDL_Keysym *key){
         else
         printf("Resuming time\n");
         break;
+        case 'c': // Toggle OSD
+        printf("Toggling OSD\n");
+        globals.drawingFlags.osd = !globals.drawingFlags.osd;
+        break;
         case 'l': // Toggle lighting
         globals.drawingFlags.lighting = !globals.drawingFlags.lighting;
         printf("Toggling lighting\n");
@@ -121,6 +128,7 @@ bool handleKeyDown(SDL_Keysym *key){
         generateLevelGeometry(&globals.level, globals.drawingFlags.tess);
         printf("Tesselation: %zu %zu\n",
         globals.drawingFlags.tess[0], globals.drawingFlags.tess[1]);
+        globals.counters.num_triangles = num_objects * globals.drawingFlags.tess[1] * globals.drawingFlags.tess[0] * 2 + num_car_triangles;
         break;
         case '-': // Decrease tesselation
         globals.drawingFlags.tess[0] =
@@ -131,6 +139,7 @@ bool handleKeyDown(SDL_Keysym *key){
         generateLevelGeometry(&globals.level, globals.drawingFlags.tess);
         printf("Tesselation: %zu %zu\n",
         globals.drawingFlags.tess[0], globals.drawingFlags.tess[1]);
+        globals.counters.num_triangles = num_objects * globals.drawingFlags.tess[1] * globals.drawingFlags.tess[0] * 2 + num_car_triangles;
         break;
         default:
         // NOTE This may break was originally updateKeyChar(key, true);
@@ -315,6 +324,7 @@ init()
     globals.drawingFlags.wireframe = false;
     globals.drawingFlags.textures = true;
     globals.drawingFlags.lighting = true;
+    globals.drawingFlags.osd = true;
     globals.drawingFlags.rm = im;
     initPlayer(&globals.player, &globals.drawingFlags);
     initLevel(&globals.level, &globals.drawingFlags);
@@ -324,6 +334,10 @@ init()
     globals.camera.width = 800;
     globals.camera.height = 600;
 
+    //NUmber of objects = num cars + num logs + 1 landscape + 1 player + osd?
+    num_objects = globals.level.river.numLanes + 1 + 1;
+    num_car_triangles = globals.level.road.numLanes * 6 * 2;
+    globals.counters.num_triangles = num_objects * globals.drawingFlags.tess[1] * globals.drawingFlags.tess[0] * 2 + num_car_triangles;
     // VBO
     //glBindBuffer(GL_ARRAY_BUFFER, globals.vbo);
     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, globals.ibo);m
@@ -364,6 +378,7 @@ int main(int argc, char const *argv[])
         return EXIT_FAILURE;
     }
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
 
     init();
 

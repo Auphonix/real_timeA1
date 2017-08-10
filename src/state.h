@@ -21,4 +21,5 @@ typedef struct {
   Counters counters;
   bool halt;
   int windowx, windowy;
+  int num_triangles;
 } Globals;

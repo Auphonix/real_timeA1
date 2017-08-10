@@ -7,7 +7,7 @@
  */
 typedef enum { im = 0, VA, VBO, nrms } renderMode;
 typedef struct {
-  bool normals, wireframe, lighting, textures, axes;
+  bool normals, wireframe, lighting, textures, axes, osd;
   size_t tess[2];
   renderMode rm;
 } DrawingFlags;

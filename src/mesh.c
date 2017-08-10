@@ -109,13 +109,14 @@ renderMesh(Mesh* mesh, DrawingFlags* flags)
     else if (flags->rm == VBO){
 
         glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         bindVBOs(mesh->vbo, mesh->ibo);
 
         glPushAttrib(GL_CURRENT_BIT);
-
         glVertexPointer(3, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(0));
-        glNormalPointer(GL_FLOAT, sizeof(Vertex), &mesh->verts[0].normal);
-        glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), &mesh->verts[0].tc);
+        glNormalPointer(GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(sizeof(Vec3f)));
+        glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), BUFFER_OFFSET(sizeof(Vec3f) * 2));
 
         glDrawElements(GL_TRIANGLES, mesh->numIndices, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
 
@@ -449,5 +450,5 @@ createCylinder(size_t stacks, size_t slices, float radius)
         glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &buffer);
         if (buffer != 0)glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-        //glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
     }

@@ -59,7 +59,7 @@ displayOSD(Counters *ctrs, DrawingFlags *dfs, int w, int h)
         glColor3f(1.0, 1.0, 0.0);
         glRasterPos2i(w-rm, h-4*vs);
         snprintf(buffer, sizeof buffer, "tr/s:  %5.0f",
-        (float) ctrs->num_triangles * (1.0 / ctrs->frameTime * milli) );
+        (float) ctrs->num_triangles * (float)(1.0 / ctrs->frameTime * milli) );
         for (bufp = buffer; *bufp; bufp++)
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *bufp);
 
@@ -75,6 +75,7 @@ displayOSD(Counters *ctrs, DrawingFlags *dfs, int w, int h)
     else{
         printf("|\tft (ms/f):%f\t|\t", ctrs->frameTime);
         printf("fr (f/s):%f\t|\t", 1.0 / ctrs->frameTime * milli);
-        printf("tess:%ld %ld\t|\n", dfs->tess[0], dfs->tess[1]);
+        printf("tess:%ld %ld\t|\t", dfs->tess[0], dfs->tess[1]);
+        printf("tr/s:  %5.0f\t|\n", (float) ctrs->num_triangles * (float)(1.0 / ctrs->frameTime * milli) );
     }
 }

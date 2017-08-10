@@ -345,9 +345,12 @@ init()
 
 int main(int argc, char const *argv[])
 {
+    #if __APPLE__
     UNUSED(argc);
     UNUSED(argv);
-
+    #else
+    glutInit(&argc, argv);
+    #endif
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0) { // Returns -1 on error
         fprintf(stderr, "Unable to init SDL: %s\n", SDL_GetError());
         return EXIT_FAILURE;

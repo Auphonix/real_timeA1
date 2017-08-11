@@ -276,9 +276,58 @@ render()
 
     applyViewMatrix(&globals.camera);
 
+    GLfloat ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat specular[] = { 1.0, 1.0, 1.0, 1.0 };
     // ADD LIGHTS HERE MANUALLY
-    static float lightPos[] = { 1, 1, 1, 0 };
+    static float lightPos[] = { 5, 1, 5, 0 };
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+
+    /* ENABLE MORE LIGHTS HERE */
+    // static float lightPos1[] = { 5, 1, -5, 0 };
+    // glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
+    // glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+    // glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
+    // glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
+    //
+    // static float lightPos2[] = { -5, 1, 5, 0 };
+    // glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse);
+    // glLightfv(GL_LIGHT2, GL_SPECULAR, specular);
+    // glLightfv(GL_LIGHT2, GL_AMBIENT, ambient);
+    // glLightfv(GL_LIGHT2, GL_POSITION, lightPos2);
+    //
+    // static float lightPos3[] = { -5, 1, -5, 0 };
+    // glLightfv(GL_LIGHT3, GL_DIFFUSE, diffuse);
+    // glLightfv(GL_LIGHT3, GL_SPECULAR, specular);
+    // glLightfv(GL_LIGHT3, GL_AMBIENT, ambient);
+    // glLightfv(GL_LIGHT3, GL_POSITION, lightPos3);
+    //
+    // static float lightPos4[] = { 5, 5, 5, 0 };
+    // glLightfv(GL_LIGHT4, GL_DIFFUSE, diffuse);
+    // glLightfv(GL_LIGHT4, GL_SPECULAR, specular);
+    // glLightfv(GL_LIGHT4, GL_AMBIENT, ambient);
+    // glLightfv(GL_LIGHT4, GL_POSITION, lightPos4);
+    //
+    // static float lightPos5[] = { 5, 5, -5, 0 };
+    // glLightfv(GL_LIGHT5, GL_DIFFUSE, diffuse);
+    // glLightfv(GL_LIGHT5, GL_SPECULAR, specular);
+    // glLightfv(GL_LIGHT5, GL_AMBIENT, ambient);
+    // glLightfv(GL_LIGHT5, GL_POSITION, lightPos5);
+    //
+    // static float lightPos6[] = { -5, 5, 5, 0 };
+    // glLightfv(GL_LIGHT6, GL_DIFFUSE, diffuse);
+    // glLightfv(GL_LIGHT6, GL_SPECULAR, specular);
+    // glLightfv(GL_LIGHT6, GL_AMBIENT, ambient);
+    // glLightfv(GL_LIGHT6, GL_POSITION, lightPos6);
+    //
+    // static float lightPos7[] = { -5, 5, -5, 0 };
+    // glLightfv(GL_LIGHT7, GL_DIFFUSE, diffuse);
+    // glLightfv(GL_LIGHT7, GL_SPECULAR, specular);
+    // glLightfv(GL_LIGHT7, GL_AMBIENT, ambient);
+    // glLightfv(GL_LIGHT7, GL_POSITION, lightPos7);
 
     renderPlayer(&globals.player, &globals.drawingFlags);
     renderLevel(&globals.level, &globals.drawingFlags);
@@ -324,6 +373,14 @@ init()
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHT0);
+    /* ENABLE MORE LIGHTS HERE*/
+    // glEnable(GL_LIGHT1);
+    // glEnable(GL_LIGHT2);
+    // glEnable(GL_LIGHT3);
+    // glEnable(GL_LIGHT4);
+    // glEnable(GL_LIGHT5);
+    // glEnable(GL_LIGHT6);
+    // glEnable(GL_LIGHT7);
     glEnable(GL_NORMALIZE);
 
     globals.drawingFlags.tess[0] = 8;
